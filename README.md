@@ -2,10 +2,11 @@
 
 This repository contains my work for the Dufuna Java Programme (Berlin cohort). It is a single Maven project that grows sprint by sprint, with each sprint adding new packages and applications on top of the existing structure.
 
-So far the project contains two runnable console applications:
+So far the project contains three runnable console applications:
 
 - **AddressApp**: an introductory program that prints a greeting.
 - **MockLekkiPropertyApp**: a small property application that models a Lekki property, saves it through a service interface and reads it back using a mock implementation.
+- **CollectionsPractice**: a practice program that explores core Java classes and collections using `LekkiProperty` objects.
 
 ## Sprint Progress
 
@@ -14,6 +15,7 @@ So far the project contains two runnable console applications:
 | 1 | Development environment setup | Installed and configured JDK 17, Maven, Git and IntelliJ IDEA. No code. | n/a |
 | 2 | Maven project and HelloWorld | Created the `address` Maven project and the `AddressApp` class, which prints `Hello, World!`. | `main` |
 | 3 | Lekki Property application | Added the `LekkiProperty` model, the `LekkiPropertyService` interface, the `MockLekkiPropertyService` implementation and the `MockLekkiPropertyApp` entry point. | `feature/jcc_Sprint3` |
+| 4 | Java classes and collections | Added `CollectionsPractice`, a program that practises `ArrayList`, `HashSet`, `TreeSet`, `HashMap`, `Queue` (`ArrayDeque`), `String`, `Object`, `Exception` and `System`. | `feature/jcc_Sprint4` |
 
 ## Tech Stack
 
@@ -95,11 +97,48 @@ LekkiProperty{propertyId=1, address='12 Admiralty Way, Lekki Phase 1, Lagos', ty
 
 The mock service holds a single property in memory. `getProperty` returns the last saved property regardless of the ID passed in, and nothing is persisted between runs.
 
+### CollectionsPractice (Sprint 4)
+
+The program creates a few `LekkiProperty` objects and uses them to exercise the core collection types and several commonly used Java classes.
+
+```bash
+java -cp target/classes com.dufuna.berlin.jesutomiwoogundare.practice.CollectionsPractice
+```
+
+Sample output (excerpt):
+
+```
+=== ArrayList ===
+1 - Duplex
+2 - Bungalow
+3 - Apartment
+1 - Duplex
+Size: 4
+Item at index 1: Bungalow
+
+=== HashSet ===
+Was the copy of p1 added? false
+Size: 3
+Unique owners: [Tunde Bello, Ada Obi]
+
+=== TreeSet ===
+Sorted property types: [Apartment, Bungalow, Duplex]
+
+=== HashMap ===
+Property with ID 2: Bungalow owned by Tunde Bello
+Contains ID 5? false
+ID 1 -> Duplex
+ID 2 -> Bungalow
+ID 3 -> Apartment
+```
+
+The full output also includes sections for Queue, String, Object, Exception and System.
+
 ### From IntelliJ IDEA
 
 1. Open the project folder in IntelliJ IDEA (**File > Open**). It will be detected as a Maven project.
 2. Set the project SDK to Java 17 under **File > Project Structure > Project**.
-3. Open `AddressApp.java` or `MockLekkiPropertyApp.java` and click the run icon next to the `main` method.
+3. Open `AddressApp.java`, `MockLekkiPropertyApp.java` or `CollectionsPractice.java` and click the run icon next to the `main` method.
 
 ## Project Structure
 
@@ -121,6 +160,8 @@ The mock service holds a single property in memory. `getProperty` returns the la
                             │   └── MockLekkiPropertyApp.java
                             ├── model
                             │   └── LekkiProperty.java
+                            ├── practice
+                            │   └── CollectionsPractice.java
                             └── service
                                 ├── LekkiPropertyService.java
                                 └── MockLekkiPropertyService.java
@@ -133,6 +174,7 @@ All packages sit under the base package `com.dufuna.berlin.jesutomiwoogundare`.
 | `address` | 2 | `AddressApp`, the HelloWorld entry point. |
 | `lekki` | 3 | `MockLekkiPropertyApp`, the entry point that builds a sample property and uses the service to save and retrieve it. |
 | `model` | 3 | `LekkiProperty`, a plain Java class describing a property: ID, address, type, room counts (bedrooms, sitting rooms, kitchens, bathrooms, toilets), owner, description and a validity period (`validFrom` and `validTo` as `LocalDate`). It provides getters and setters and overrides `toString`, `equals` and `hashCode`. |
+| `practice` | 4 | `CollectionsPractice`, a program that creates sample `LekkiProperty` objects and uses them to practise `ArrayList`, `HashSet`, `TreeSet`, `HashMap`, `Queue` (`ArrayDeque`), `String`, `Object`, `Exception` and `System`. |
 | `service` | 3 | `LekkiPropertyService`, an interface with `saveProperty(LekkiProperty)` and `getProperty(long)`, and `MockLekkiPropertyService`, an in-memory implementation that logs each call to the console. |
 
 Build output goes to `target/`, which is not tracked in Git.
@@ -183,7 +225,7 @@ Each sprint is developed on its own branch and merged into `main` through a pull
    git push -u origin feature/jcc_SprintN
    ```
 
-7. Open a pull request from `feature/jcc_SprintN` into `main` on GitHub, review it and merge it.
+7. Open a pull request from `feature/jcc_SprintN` into `main` on GitHub, share it with the mentors for review and merge only after their approval. Never push directly to `main`.
 
 Build output (`target/`) and IDE-specific files (`.idea/`, `*.iml`) are excluded through `.gitignore`.
 
